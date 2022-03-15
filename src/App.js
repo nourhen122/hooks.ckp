@@ -1,5 +1,5 @@
 import './App.css';
-import MovieCard from './components/MovieCard';
+// import MovieCard from './components/MovieCard';
 
 import { useState } from 'react';
 import StarRating from './components/StarRating';
@@ -7,6 +7,8 @@ import { MoviesList } from './Data';
 import MovieList from './components/MovieList';
 import Search from './components/Search';
 import AddMovie from './components/AddMovie';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Trailer from './components/Trailer';
 
 function App() {
 	const [ movie, setMovie ] = useState(MoviesList);
@@ -19,14 +21,18 @@ function App() {
   const handleRating = (x) => setRating(x)
 	return (
 		<div className="App">
-			<data />
-			{/* < MovieCard/> */}
+		    <BrowserRouter>
 			<Search text={text} handleText={handleText} rating={rating} handleRating={handleRating} />
-			<MovieList
+			<Routes>
+			{/* < MovieCard/> */}
+			<Route path="/" element={<MovieList
 				movie={movie.filter((el) => el.name.toLowerCase().includes(text.toLowerCase()) && el.rating >= rating)}
-			/>
-			<StarRating />
+			/>} />
+			{/* <StarRating /> */}
+				<Route path='/:id' element={<Trailer movie={movie} />}  />
+			</Routes>
 			<AddMovie add={handleAdd} />
+			</BrowserRouter>
 		</div>
 	);
 }
